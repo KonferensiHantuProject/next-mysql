@@ -1,9 +1,15 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import Layout from '@/components/Layout'
+import { useState } from 'react'
+import AppContext from '@/context/appContext'
+
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({users}) {
+
+  const [myUser, setMyUser] = useState(users);
+
   return (
     <>
       <Head>
@@ -16,8 +22,28 @@ export default function Home() {
         <meta name="og:url" content = "https://www.linkedin.com/in/anand346" />
       </Head>
       <main>
-        <Layout></Layout>
+        <AppContext.Provider value={{ 
+          users: myUser,
+          setMyUser: setMyUser
+         }}>
+          <Layout></Layout>
+         </AppContext.Provider>
       </main>
     </>
   )
+}
+
+// Get Data From API
+export async function getServerSideProps(){
+
+  const response = await fetch("http://localhost:3000/api/users");
+
+  // USers
+  const users = await response.json();
+
+  return {
+    props: {
+      users : users
+    }
+  }
 }
