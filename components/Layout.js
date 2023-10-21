@@ -2,8 +2,13 @@ import Alert from "./Alert";
 import Pagination from "./Pagintaion";
 import UserTable from "./Usertable";
 import Navbar from "./Navbar";
+import AppContext from "@/context/appContext";
+import { useContext } from "react";
 
 const Layout = () => {
+
+    const value = useContext(AppContext);
+
     return (
         <>
             {/* <!-- Add Modal HTML --> */}
@@ -66,7 +71,7 @@ const Layout = () => {
                     <Alert></Alert>
                     <div className="table-wrapper">
                         <Navbar></Navbar>
-                        <UserTable></UserTable>
+                        <UserTable users={value.users}></UserTable>
                         <Pagination></Pagination>
                     </div>
                 </div>
