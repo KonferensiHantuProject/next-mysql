@@ -32,7 +32,7 @@ const User = ({user, handleDelete, setEditUser, checkedAll, setCheckedAll}) => {
             const newCheckedUser = value.checkedUser.filter(user => {
                 return user != userId ;
             });
-            console.log(newCheckedUser)
+
             value.setCheckedUser(newCheckedUser);
         }
     }
