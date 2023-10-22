@@ -6,11 +6,16 @@ import AppContext from "@/context/appContext";
 import { useContext, useState } from "react";
 import { Paginate } from "@/helpers/paginate";
 import { Search } from "@/helpers/search";
-import handler from "@/pages/api/hello";
+import CheckedContext from "@/context/checkedContext";
 
 const Layout = () => {
 
     const value = useContext(AppContext);
+
+    // Checked User
+    const [checkedUser, setCheckedUser] = useState([])
+
+    console.log(checkedUser);
 
     // Alert
     const [alertMessage, setAlertMessage] = useState("");
@@ -160,71 +165,76 @@ const Layout = () => {
 
     return (
         <>
-            {/* <!-- Add Modal HTML --> */}
-            <div id="addEmployeeModal" className="modal fade">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <form onSubmit={handleAddSubmit}>
-                            <div className="modal-header">						
-                                <h4 className="modal-title">Add Employee</h4>
-                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div className="modal-body">					
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input value={saveUser.username} onChange={handleSaveChange} type="text" className="form-control" name="username" required />
+            <CheckedContext.Provider value={{ 
+                checkedUser: checkedUser,
+                setCheckedUser: setCheckedUser
+             }}>
+                {/* <!-- Add Modal HTML --> */}
+                <div id="addEmployeeModal" className="modal fade">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <form onSubmit={handleAddSubmit}>
+                                <div className="modal-header">						
+                                    <h4 className="modal-title">Add Employee</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
-                                <div className="form-group">
-                                    <label>Email</label>
-                                    <input value={saveUser.email} onChange={handleSaveChange} type="email" className="form-control" name="email" required />
-                                </div>				
-                            </div>
-                            <div className="modal-footer">
-                                <input type="button" className="btn btn-default addCancel" name="submit" data-dismiss="modal" value="Cancel" />
-                                <input type="submit" className="btn btn-success bg-green-500" value="Add" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- Edit Modal HTML --> */}
-            <div id="editEmployeeModal" className="modal fade">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <form onSubmit={handleEditSubmit}>
-                            <div className="modal-header">						
-                                <h4 className="modal-title">Edit Employee</h4>
-                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <input type="hidden" name="updateId" className = "updateId" />					
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input type="text" value={editUser.username} onChange={handleEditChange} className="form-control updateUsername" name = "username" required />
+                                <div className="modal-body">					
+                                    <div className="form-group">
+                                        <label>Name</label>
+                                        <input value={saveUser.username} onChange={handleSaveChange} type="text" className="form-control" name="username" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Email</label>
+                                        <input value={saveUser.email} onChange={handleSaveChange} type="email" className="form-control" name="email" required />
+                                    </div>				
                                 </div>
-                                <div className="form-group">
-                                    <label>password</label>
-                                    <input type="text" value={editUser.email} onChange={handleEditChange} className="form-control updatePassword" name = "password"  required />
-                                </div>			
-                            </div>
-                            <div className="modal-footer">
-                                <input type="button" name = "submit" className="btn btn-default editCancel" data-dismiss="modal" value="Cancel" />
-                                <input type="submit" className="btn btn-info bg-blue-500" value="Save" />
-                            </div>
-                        </form>
+                                <div className="modal-footer">
+                                    <input type="button" className="btn btn-default addCancel" name="submit" data-dismiss="modal" value="Cancel" />
+                                    <input type="submit" className="btn btn-success bg-green-500" value="Add" />
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="container-xl">
-	            <div className="table-responsive d-flex flex-column">
-                    <Alert text={alertMessage} setAlertMessage={setAlertMessage} style={alertMessage.length > 0 ? 'block' : 'none'}></Alert>
-                    <div className="table-wrapper">
-                        <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
-                        <UserTable setEditUser={setEditUser} users={paginatedUsers} handleDelete={handleDelete}></UserTable>
-                        <Pagination userCount={searchQuery.length > 0 ? searchdResult.length : value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
+                {/* <!-- Edit Modal HTML --> */}
+                <div id="editEmployeeModal" className="modal fade">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <form onSubmit={handleEditSubmit}>
+                                <div className="modal-header">						
+                                    <h4 className="modal-title">Edit Employee</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div className="modal-body">
+                                    <input type="hidden" name="updateId" className = "updateId" />					
+                                    <div className="form-group">
+                                        <label>Name</label>
+                                        <input type="text" value={editUser.username} onChange={handleEditChange} className="form-control updateUsername" name = "username" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>password</label>
+                                        <input type="text" value={editUser.email} onChange={handleEditChange} className="form-control updatePassword" name = "password"  required />
+                                    </div>			
+                                </div>
+                                <div className="modal-footer">
+                                    <input type="button" name = "submit" className="btn btn-default editCancel" data-dismiss="modal" value="Cancel" />
+                                    <input type="submit" className="btn btn-info bg-blue-500" value="Save" />
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div className="container-xl">
+                    <div className="table-responsive d-flex flex-column">
+                        <Alert text={alertMessage} setAlertMessage={setAlertMessage} style={alertMessage.length > 0 ? 'block' : 'none'}></Alert>
+                        <div className="table-wrapper">
+                            <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
+                            <UserTable setEditUser={setEditUser} users={paginatedUsers} handleDelete={handleDelete}></UserTable>
+                            <Pagination userCount={searchQuery.length > 0 ? searchdResult.length : value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
+                        </div>
+                    </div>
+                </div>
+            </CheckedContext.Provider>
         </>
     );
 }

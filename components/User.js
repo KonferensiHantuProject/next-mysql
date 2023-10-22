@@ -1,4 +1,10 @@
+import CheckedContext from "@/context/checkedContext";
+import { useContext } from "react";
+
 const User = ({user, handleDelete, setEditUser}) => {
+
+    // Checked Context
+    const value = useContext(CheckedContext);
 
     // Getting Specific User
     const fetchUser = async (userId) => {
@@ -10,13 +16,29 @@ const User = ({user, handleDelete, setEditUser}) => {
 
     }
 
+    // Handling Checked Checkbox
+    const handleChangeChecked = ({target}, userId) => {
+
+        const {checked} = target;
+
+        if(checked){
+            value.setCheckedUser([...value.checkedUser, userId])
+        }else{
+            const newCheckedUser = value.checkedUser.filter(user => {
+                return user.id != userId;
+            });
+
+            value.setCheckedUser(newCheckedUser);
+        }
+    }
+
     return (
         <>
             <tr>
                 <input type="hidden" id="userId" name="id" value = "" />
                 <td>
                     <span className="custom-checkbox">
-                        <input type="checkbox" id="data_checkbox" className="data_checkbox" name="data_checkbox" value="" />
+                        <input type="checkbox" id="data_checkbox" onChange={(e) => handleChangeChecked(e, user.id)} className="data_checkbox" name="data_checkbox" value="" />
                         <label htmlFor="data_checkbox"></label>
                     </span>
                 </td>
