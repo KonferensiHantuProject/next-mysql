@@ -16,7 +16,7 @@ const Pagination = ({userCount, currentPage, pageSize, onPageChange}) => {
 					{
 						pages.map(page => {
 							return (
-								<li className = {`page-item ${page == currentPage ? 'active' : ''}`}><a href="#" className = "page-link" onClick={() => onPageChange(page)}>{page}</a></li>
+								<li key={page} className = {`page-item ${page == currentPage ? 'active' : ''}`}><a href="#" className = "page-link" onClick={() => onPageChange(page)}>{page}</a></li>
 							)
 						})
 					}
