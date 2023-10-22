@@ -42,7 +42,7 @@ const addUser = async (req, res) => {
             }
         })
 
-        return res.status(200).json({result})
+        return res.status(200).json({...result, username, email})
     }catch(error){
         return res.status(500).json({error})
     }
