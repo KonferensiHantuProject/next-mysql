@@ -12,6 +12,9 @@ const Layout = () => {
 
     const value = useContext(AppContext);
 
+    // Alert
+    const [alertMessage, setAlertMessage] = useState("");
+
     // Save Data
     const [saveUser, setSaveUser] = useState({
         username: "",
@@ -70,6 +73,11 @@ const Layout = () => {
 
         // Result
         if(result){
+
+            // Set Alert
+            setAlertMessage("Successfully adding user")
+
+            // Set Value
             document.getElementsByClassName("addCancel")[0].click();
             const prevUser = value.users;
             prevUser.push(result);
@@ -91,6 +99,10 @@ const Layout = () => {
         // Result
         if(result){
 
+            // Set Alert
+            setAlertMessage("Successfully deleting user")
+
+            // Set Value
             const prevUsers = value.users;
 
             // Filter id, do not take the deleted id
@@ -162,7 +174,7 @@ const Layout = () => {
             </div>
             <div className="container-xl">
 	            <div className="table-responsive d-flex flex-column">
-                    <Alert></Alert>
+                    <Alert text={alertMessage} setAlertMessage={setAlertMessage} style={alertMessage.length > 0 ? 'block' : 'none'}></Alert>
                     <div className="table-wrapper">
                         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
                         <UserTable users={paginatedUsers} handleDelete={handleDelete}></UserTable>
