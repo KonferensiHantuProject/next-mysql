@@ -9,7 +9,7 @@ const User = ({user, handleDelete, setEditUser, checkedAll, setCheckedAll}) => {
     // Getting Specific User
     const fetchUser = async (userId) => {
 
-        const response = await fetch("http://localhost:3000/api/users/"+userId);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users/`+userId);
         const result = await response.json();
 
         setEditUser(result);

@@ -21,7 +21,7 @@ const Navbar = ({searchQuery, setSearchQuery, setAlertMessage}) => {
 			body: JSON.stringify({ids: checkedIds})
 		}
 
-		const response = await fetch("http://localhost:3000/api/users/deleteMulti", reqOption);
+		const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users/deleteMulti`, reqOption);
 		const result = await response.json();
 
 		if("ids" in result){
