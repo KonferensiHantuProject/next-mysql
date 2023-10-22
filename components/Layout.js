@@ -3,12 +3,25 @@ import Pagination from "./Pagintaion";
 import UserTable from "./Usertable";
 import Navbar from "./Navbar";
 import AppContext from "@/context/appContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Paginate } from "@/helpers/paginate";
 
 const Layout = () => {
 
     const value = useContext(AppContext);
 
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 3;
+
+    // Set Current Page
+    const onPageChange = (page) => {
+        setCurrentPage(page);
+    }
+
+    // Pagination
+    let paginatedUsers = Paginate(value.users, currentPage, pageSize);
+    
     return (
         <>
             {/* <!-- Add Modal HTML --> */}
@@ -71,8 +84,8 @@ const Layout = () => {
                     <Alert></Alert>
                     <div className="table-wrapper">
                         <Navbar></Navbar>
-                        <UserTable users={value.users}></UserTable>
-                        <Pagination></Pagination>
+                        <UserTable users={paginatedUsers}></UserTable>
+                        <Pagination userCount={value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
                     </div>
                 </div>
             </div>
