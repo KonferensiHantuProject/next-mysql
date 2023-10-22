@@ -1,6 +1,6 @@
 import User from "./User";
 
-const UserTable = ({users, handleDelete}) => {
+const UserTable = ({users, handleDelete, setEditUser}) => {
 
 	// Generating User
 	const userGenerator = () => {
@@ -9,7 +9,7 @@ const UserTable = ({users, handleDelete}) => {
 				{
 					users.map(user => {
 						return (
-							<User key={user} user={user} handleDelete={handleDelete}></User>
+							<User key={user.id} user={user} setEditUser={setEditUser} handleDelete={handleDelete}></User>
 						)
 					})
 				}

@@ -1,4 +1,15 @@
-const User = ({user, handleDelete}) => {
+const User = ({user, handleDelete, setEditUser}) => {
+
+    // Getting Specific User
+    const fetchUser = async (userId) => {
+
+        const response = await fetch("http://localhost:3000/api/users/"+userId);
+        const result = await response.json();
+
+        setEditUser(result);
+
+    }
+
     return (
         <>
             <tr>
@@ -12,7 +23,7 @@ const User = ({user, handleDelete}) => {
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>
-                    <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                    <a href="#editEmployeeModal" onClick={() => fetchUser(user.id)} className="edit" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     <a href="#deleteEmployeeModal" onClick={() => handleDelete(user.id)} className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                 </td>
             </tr>
