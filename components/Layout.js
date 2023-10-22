@@ -21,6 +21,13 @@ const Layout = () => {
         email: ""
     })
 
+    // Edit Data
+    const [editUser, setEditUser] = useState({
+        id: "",
+        username: "",
+        email: ""
+    })
+
     // Search
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -49,6 +56,42 @@ const Layout = () => {
     // Save Change
     const handleSaveChange = ({target: {name, value}}) => {
         setSaveUser({...saveUser, [name]: value})
+    }
+
+    // Edit Change
+    const handleEditChange = ({target: {name, value}}) => {
+        setEditUser({...editUser, [name]: value})
+    }
+
+    // Submit Edit Form
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+
+        // Set Method
+        const reqOption = {
+            method: "PUT",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(editUser)
+        }
+
+        const response = await fetch("http://localhost:3000/api/users/"+editUser.id, reqOption);
+        const result = await response.json();
+
+        // Result
+        if(result){
+
+            // Set Alert
+            setAlertMessage("Successfully editing user")
+
+            // Set Value
+            document.getElementsByClassName("editCancel")[0].click();
+            const prevUser = value.users.filter(user => {
+                return user.id != editUser.id
+            });;
+            prevUser.push(result);
+
+            value.setMyUser(prevUser);
+        }
     }
 
     // Submit Form
@@ -148,7 +191,7 @@ const Layout = () => {
             <div id="editEmployeeModal" className="modal fade">
                 <div className="modal-dialog">
                     <div className="modal-content">
-                        <form action = "#" method = "POST">
+                        <form onSubmit={handleEditSubmit}>
                             <div className="modal-header">						
                                 <h4 className="modal-title">Edit Employee</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -157,16 +200,16 @@ const Layout = () => {
                                 <input type="hidden" name="updateId" className = "updateId" />					
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" className="form-control updateUsername" name = "username" required />
+                                    <input type="text" value={editUser.username} onChange={handleEditChange} className="form-control updateUsername" name = "username" required />
                                 </div>
                                 <div className="form-group">
                                     <label>password</label>
-                                    <input type="text" className="form-control updatePassword" name = "password"  required />
+                                    <input type="text" value={editUser.email} onChange={handleEditChange} className="form-control updatePassword" name = "password"  required />
                                 </div>			
                             </div>
                             <div className="modal-footer">
-                                <input type="button" name = "submit" className="btn btn-default" data-dismiss="modal" value="Cancel" />
-                                <input type="submit" className="btn btn-info" value="Save" />
+                                <input type="button" name = "submit" className="btn btn-default editCancel" data-dismiss="modal" value="Cancel" />
+                                <input type="submit" className="btn btn-info bg-blue-500" value="Save" />
                             </div>
                         </form>
                     </div>
@@ -177,7 +220,7 @@ const Layout = () => {
                     <Alert text={alertMessage} setAlertMessage={setAlertMessage} style={alertMessage.length > 0 ? 'block' : 'none'}></Alert>
                     <div className="table-wrapper">
                         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
-                        <UserTable users={paginatedUsers} handleDelete={handleDelete}></UserTable>
+                        <UserTable setEditUser={setEditUser} users={paginatedUsers} handleDelete={handleDelete}></UserTable>
                         <Pagination userCount={searchQuery.length > 0 ? searchdResult.length : value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
                     </div>
                 </div>
