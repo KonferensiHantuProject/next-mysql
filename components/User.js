@@ -1,7 +1,7 @@
 import CheckedContext from "@/context/checkedContext";
 import { useContext } from "react";
 
-const User = ({user, handleDelete, setEditUser}) => {
+const User = ({user, handleDelete, setEditUser, checkedAll, setCheckedAll}) => {
 
     // Checked Context
     const value = useContext(CheckedContext);
@@ -21,6 +21,11 @@ const User = ({user, handleDelete, setEditUser}) => {
 
         const {checked} = target;
 
+        // If Checked All
+        if(checkedAll & !checked){
+            setCheckedAll(false)
+        }
+        
         if(checked){
             value.setCheckedUser([...value.checkedUser, userId])
         }else{
