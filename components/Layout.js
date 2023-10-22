@@ -15,8 +15,6 @@ const Layout = () => {
     // Checked User
     const [checkedUser, setCheckedUser] = useState([])
 
-    console.log(checkedUser);
-
     // Alert
     const [alertMessage, setAlertMessage] = useState("");
 
@@ -228,7 +226,7 @@ const Layout = () => {
                     <div className="table-responsive d-flex flex-column">
                         <Alert text={alertMessage} setAlertMessage={setAlertMessage} style={alertMessage.length > 0 ? 'block' : 'none'}></Alert>
                         <div className="table-wrapper">
-                            <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
+                            <Navbar setAlertMessage={setAlertMessage} searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
                             <UserTable setEditUser={setEditUser} users={paginatedUsers} handleDelete={handleDelete}></UserTable>
                             <Pagination userCount={searchQuery.length > 0 ? searchdResult.length : value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
                         </div>
