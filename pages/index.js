@@ -36,7 +36,7 @@ export default function Home({users}) {
 // Get Data From API
 export async function getServerSideProps(){
 
-  const response = await fetch("http://localhost:3000/api/users");
+  const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users`);
 
   // USers
   const users = await response.json();

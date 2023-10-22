@@ -77,7 +77,7 @@ const Layout = () => {
             body: JSON.stringify(editUser)
         }
 
-        const response = await fetch("http://localhost:3000/api/users/"+editUser.id, reqOption);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users/`+editUser.id, reqOption);
         const result = await response.json();
 
         // Result
@@ -108,7 +108,7 @@ const Layout = () => {
             body: JSON.stringify(saveUser)
         }
 
-        const response = await fetch("http://localhost:3000/api/users/", reqOption);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users/`, reqOption);
         const result = await response.json();
 
         // Saved Data
@@ -139,7 +139,7 @@ const Layout = () => {
             method: "DELETE"
         }
 
-        const response = await fetch("http://localhost:3000/api/users/"+userId, reqOption);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/users/`+userId, reqOption);
         const result = await response.json();
 
         // Result
