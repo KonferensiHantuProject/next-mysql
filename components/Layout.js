@@ -62,6 +62,12 @@ const Layout = () => {
         const response = await fetch("http://localhost:3000/api/users/", reqOption);
         const result = await response.json();
 
+        // Saved Data
+        setSaveUser({
+            username: "",
+            email: ""
+        })
+
         // Result
         if(result){
             document.getElementsByClassName("addCancel")[0].click();
@@ -69,6 +75,31 @@ const Layout = () => {
             prevUser.push(result);
 
             value.setMyUser(prevUser);
+        }
+    }
+
+    // Handling Delete
+    const handleDelete = async(userId) => {
+
+        const reqOption = {
+            method: "DELETE"
+        }
+
+        const response = await fetch("http://localhost:3000/api/users/"+userId, reqOption);
+        const result = await response.json();
+
+        // Result
+        if(result){
+
+            const prevUsers = value.users;
+
+            // Filter id, do not take the deleted id
+            const newUsers = prevUsers.filter(user => {
+                return user.id != userId;
+            });
+            
+            // Change list of user
+            value.setMyUser(newUsers);
         }
     }
 
@@ -134,7 +165,7 @@ const Layout = () => {
                     <Alert></Alert>
                     <div className="table-wrapper">
                         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}></Navbar>
-                        <UserTable users={paginatedUsers}></UserTable>
+                        <UserTable users={paginatedUsers} handleDelete={handleDelete}></UserTable>
                         <Pagination userCount={searchQuery.length > 0 ? searchdResult.length : value.users.length} currentPage={currentPage} pageSize={pageSize} onPageChange={onPageChange}></Pagination>
                     </div>
                 </div>
